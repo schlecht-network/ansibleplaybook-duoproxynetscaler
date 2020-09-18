@@ -1,0 +1,57 @@
+---
+ - name: "install epel"
+   yum:
+           name: epel-release
+           state: present
+
+ - name: "installing duo proxy deps"
+   yum:
+           name:
+                   - gcc 
+                   - make
+                   - libffi-devel 
+                   - perl 
+                   - zlib-devel
+                   - tar
+ 
+ - name: "download most recent auth proxy"
+   get_url:
+           url: https://dl.duosecurity.com/duoauthproxy-latest-src.tgz
+           dest: /tmp/
+
+ - name: "find just downloaded file"
+   find:
+           paths: /tmp
+           patterns: "duoauthproxy*tgz"
+           recurse: no
+   register: duotarfile
+
+ - name: "extract files"
+   unarchive: 
+        src: "{{ item.path }}"
+        dest: /tmp/
+        remote_src: yes
+   with_items: "{{ duotarfile.files }}"
+
+ - name: "find extracted dir"
+   find:
+           paths: /tmp
+           patterns: "duoauthproxy*src"
+           recurse: no
+           file_type: directory
+   register: extracteddir
+
+ - name: "make duoauthproxy"
+   make:
+           chdir: "{{ item.path }}"
+   with_items: "{{ extracteddir.files }}"
+
+ - name: "install"
+   command: "{{ item.path }}/duoauthproxy-build/install  --install-dir /opt/duoauthproxy --service-user duo_authproxy_svc --log-group duo_authproxy_grp --create-init-script yes"
+   with_items: "{{ extracteddir.files }}"
+
+ - name: "Set configuration file"
+   template:
+           src: template_authproxy.cfg.j2
+           dest: /opt/duoauthproxy/conf/authproxy.cfg
+   notify: restart duoauthproxy 

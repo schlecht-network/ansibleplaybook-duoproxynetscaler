@@ -1,0 +1,6 @@
+---
+radiusserveriframe_type: citrix_netscaler
+failmode: safe
+client: duo_only_client
+port_iframeradius: 1812
+port_duoonlyradius: 18120

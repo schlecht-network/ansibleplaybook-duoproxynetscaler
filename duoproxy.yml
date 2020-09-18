@@ -1,0 +1,20 @@
+---
+ - hosts: duoproxy
+   become: true
+   vars:
+           api_host: ""
+           ikey: ""
+           skey: ""
+           netscalers:
+                   - number: '1'
+                     netscaler_ip: '' 
+                     secret: ''
+           firewall_cmd_allow:
+                   - port: 1812/tcp
+                   - port: 1812/udp
+                   - port: 18120/tcp
+                   - port: 18120/udp
+   roles:
+           - ansible-duoproxy
+           - ansible-firewallcmd
+

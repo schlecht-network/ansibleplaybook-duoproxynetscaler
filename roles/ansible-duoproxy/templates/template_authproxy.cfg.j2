@@ -1,0 +1,53 @@
+[duo_only_client]
+
+[radius_server_iframe]
+{% if radiusserveriframe_type is defined %}
+type={{ radiusserveriframe_type }}
+{% endif %}
+{% if api_host is defined %}
+api_host={{ api_host }}
+{% endif %}
+{% if ikey is defined %}
+ikey={{ ikey }}
+{% endif %}
+{% if skey is defined %}
+skey={{ skey }}
+{% endif %}
+{% if failmode is defined %}
+failmode={{ failmode }}
+{% endif %}
+{% if client is defined %}
+client={{ client }}
+{% endif %}
+{% if netscalers is defined %}
+{% for range in netscalers %}
+radius_ip_{{ range.number }}={{ range.netscaler_ip }}
+radius_secret_{{ range.number }}={{ range.secret }}
+{% endfor%}
+{% endif %}
+{% if port_iframeradius is defined %}
+port={{ port_iframeradius }}
+{% endif %}
+
+[radius_server_duo_only]
+{% if api_host is defined %}
+api_host={{ api_host }}
+{% endif %}
+{% if ikey is defined %}
+ikey={{ ikey }}
+{% endif %}
+{% if skey is defined %}
+skey={{ skey }}
+{% endif %}
+{% if failmode is defined %}
+failmode={{ failmode }}
+{% endif %}
+{% if netscalers is defined %}
+{% for range in netscalers %}
+radius_ip_{{ range.number }}={{ range.netscaler_ip }}
+radius_secret_{{ range.number }}={{ range.secret }}
+{% endfor%}
+{% endif %}
+{% if port_duoonlyradius is defined %}
+port={{ port_duoonlyradius }}
+{% endif %}

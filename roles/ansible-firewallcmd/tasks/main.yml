@@ -1,0 +1,19 @@
+---
+
+ - name: 'firewall-cmd allow service'
+   firewalld:
+         service: "{{ item.service }}"
+         permanent: yes
+         immediate: yes
+         state: enabled
+   with_items: "{{ firewall_cmd_allow }}"
+   when: item.service is defined
+
+ - name: 'firewall-cmd allow port'
+   firewalld:
+         port: "{{ item.port }}"
+         permanent: yes
+         immediate: yes
+         state: enabled
+   with_items: "{{ firewall_cmd_allow }}"
+   when: item.port is defined

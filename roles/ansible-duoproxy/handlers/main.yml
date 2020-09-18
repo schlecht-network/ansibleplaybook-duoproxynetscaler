@@ -1,0 +1,6 @@
+---
+ - name: restart duoauthproxy
+   shell: "/opt/duoauthproxy/bin/authproxyctl restart"
+
+ - name: start duoauthproxy
+   shell: "/opt/duoauthproxy/bin/authproxyctl start"
