@@ -55,3 +55,9 @@
            src: template_authproxy.cfg.j2
            dest: /opt/duoauthproxy/conf/authproxy.cfg
    notify: restart duoauthproxy 
+
+ - name: "create autostart cron job"
+   cron:
+           name: "autostart duoauthproxy"
+           special_time: reboot
+           job: "/opt/duoauthproxy/bin/authproxyctl start"
